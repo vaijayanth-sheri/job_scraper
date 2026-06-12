@@ -1,0 +1,10 @@
+.venv/
+.venv*/
+__pycache__/
+*.py[cod]
+
+output/*.csv
+!output/.gitkeep
+runtime/
+frontend/dist/
+frontend/node_modules/

@@ -1,0 +1,8 @@
+sources:
+  - linkedin
+  - indeed
+  - stepstone
+
+country: Germany
+
+results_per_source: 100
