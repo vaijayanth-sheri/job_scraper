@@ -10,7 +10,7 @@ from typing import Any, Callable
 
 import pandas as pd
 import yaml
-from jobspy import scrape_jobs
+from job_search.adapters import scrape_jobs
 
 
 CONFIG_PATH = Path("config.yaml")
@@ -34,7 +34,7 @@ JOBSPY_SOURCE_COLUMNS = {
     "site": "source_website",
     "job_type": "employment_type",
 }
-SUPPORTED_JOBSPY_SOURCES = {"linkedin", "indeed"}
+SUPPORTED_JOBSPY_SOURCES = {"linkedin", "indeed", "jobvector", "arbeitsagentur", "englishjobs", "devjobs"}
 ALLOWED_CONFIG_SOURCES = SUPPORTED_JOBSPY_SOURCES | {"stepstone"}
 DEFAULT_TIMEOUT_SECONDS = 180
 

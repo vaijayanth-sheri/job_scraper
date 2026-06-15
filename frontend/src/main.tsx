@@ -69,7 +69,7 @@ const defaultForm: FormState = {
   resultsPerSource: 25,
   freshnessValue: 24,
   freshnessUnit: "hours",
-  selectedSources: ["linkedin", "indeed"],
+  selectedSources: ["linkedin", "indeed", "jobvector", "arbeitsagentur", "englishjobs", "devjobs"],
 };
 
 function App() {
@@ -296,6 +296,10 @@ function Summary({
     <section className="summary-band">
       <Metric label="LinkedIn" value={metadata?.source_counts.linkedin ?? "-"} />
       <Metric label="Indeed" value={metadata?.source_counts.indeed ?? "-"} />
+      <Metric label="Jobvector" value={metadata?.source_counts.jobvector ?? "-"} />
+      <Metric label="Arbeitsagentur" value={metadata?.source_counts.arbeitsagentur ?? "-"} />
+      <Metric label="EnglishJobs" value={metadata?.source_counts.englishjobs ?? "-"} />
+      <Metric label="DevJobs" value={metadata?.source_counts.devjobs ?? "-"} />
       <Metric label="Duplicates" value={metadata?.duplicates_removed ?? "-"} />
       <Metric label="Exported" value={metadata?.final_count ?? "-"} />
       {jobId && status === "completed" ? (
