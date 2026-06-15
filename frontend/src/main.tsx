@@ -269,6 +269,7 @@ function App() {
       {status?.error ? <Notice tone="error" text={status.error} /> : null}
 
       <Summary metadata={status?.metadata ?? null} jobId={jobId} status={status?.status} />
+      <SourceErrorsPanel metadata={status?.metadata ?? null} />
       <ResultsTable rows={rows} />
     </main>
   );
@@ -328,6 +329,47 @@ function Notice({ tone, text }: { tone: "error" | "success"; text: string }) {
       <Icon size={18} />
       <span>{text}</span>
     </div>
+  );
+}
+
+function SourceErrorsPanel({ metadata }: { metadata: SearchMetadata | null }) {
+  if (!metadata) return null;
+
+  const errorSources = Object.entries(metadata.source_errors);
+  const skippedSources = Object.entries(metadata.skipped_sources);
+
+  if (errorSources.length === 0 && skippedSources.length === 0) {
+    return null;
+  }
+
+  return (
+    <section className="errors-panel">
+      <h3>Scraping Issues</h3>
+      {errorSources.length > 0 && (
+        <div className="error-list">
+          <h4>Errors</h4>
+          <ul>
+            {errorSources.map(([source, error]) => (
+              <li key={source}>
+                <strong>{source}:</strong> {error}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {skippedSources.length > 0 && (
+        <div className="error-list">
+          <h4>Skipped</h4>
+          <ul>
+            {skippedSources.map(([source, reason]) => (
+              <li key={source}>
+                <strong>{source}:</strong> {reason}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
   );
 }
 

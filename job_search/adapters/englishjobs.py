@@ -39,7 +39,7 @@ class EnglishJobsAdapter(JobAdapter):
         }
 
         try:
-            with httpx.Client(timeout=15.0) as client:
+            with httpx.Client(timeout=15.0, follow_redirects=True) as client:
                 response = client.get(search_url, headers=headers)
                 response.raise_for_status()
                 

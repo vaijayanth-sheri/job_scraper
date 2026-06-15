@@ -229,6 +229,40 @@ select:focus {
   padding: 14px;
 }
 
+.errors-panel {
+  background: #fff0ef;
+  border: 1px solid #dc8a82;
+  border-radius: 8px;
+  color: #a42c20;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.errors-panel h3 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+}
+
+.error-list h4 {
+  margin: 0 0 4px;
+  font-size: 0.85rem;
+  color: #7b2118;
+}
+
+.error-list ul {
+  margin: 0 0 12px;
+  padding-left: 20px;
+}
+
+.error-list ul:last-child {
+  margin-bottom: 0;
+}
+
+.error-list li {
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
 .metric {
   display: grid;
   gap: 2px;
