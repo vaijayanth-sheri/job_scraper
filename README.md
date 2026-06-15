@@ -1,3 +1,15 @@
+---
+title: Job Scraper
+emoji: 🏆
+colorFrom: red
+colorTo: indigo
+sdk: docker
+app_port: 8000
+pinned: false
+license: mit
+short_description: A simple frontend to pull live jobs from job boards
+---
+
 # German Job Search Collector
 
 Small Python and React MVP for collecting German job postings with JobSpy, showing results in a web table, and exporting a clean CSV.
