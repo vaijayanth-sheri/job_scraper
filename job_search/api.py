@@ -27,7 +27,7 @@ from job_search.scraper import (
 
 
 FRONTEND_DIST = Path("frontend") / "dist"
-DEFAULT_SOURCES = ["linkedin", "indeed"]
+DEFAULT_SOURCES = ["linkedin", "indeed", "jobvector", "arbeitsagentur", "englishjobs", "devjobs"]
 MAX_WORKERS = 2
 
 
@@ -142,6 +142,10 @@ def sources() -> dict[str, list[dict[str, Any]]]:
         "sources": [
             {"id": "linkedin", "label": "LinkedIn", "available": True},
             {"id": "indeed", "label": "Indeed", "available": True},
+            {"id": "jobvector", "label": "Jobvector", "available": True},
+            {"id": "arbeitsagentur", "label": "Arbeitsagentur", "available": True},
+            {"id": "englishjobs", "label": "EnglishJobs", "available": True},
+            {"id": "devjobs", "label": "DevJobs", "available": True},
             {
                 "id": "stepstone",
                 "label": "StepStone",
