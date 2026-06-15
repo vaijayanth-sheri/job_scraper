@@ -23,7 +23,9 @@ jobs:
             echo "::error::HF_TOKEN secret is not configured."
             exit 1
           fi
-          HF_SPACE_URL="https://Vaijayanth-sheri:${HF_TOKEN}@huggingface.co/spaces/Vaijayanth-sheri/Job_scraper"
+          HF_SPACE_URL="https://huggingface.co/spaces/Vaijayanth-sheri/Job_scraper"
+          HF_AUTH_HEADER=$(printf "Vaijayanth-sheri:%s" "$HF_TOKEN" | base64 | tr -d '\n')
+          echo "::add-mask::$HF_AUTH_HEADER"
           if git remote get-url space >/dev/null 2>&1; then
             git remote set-url space "$HF_SPACE_URL"
           else
@@ -31,17 +33,17 @@ jobs:
           fi
           ATTEMPTS=3
           for ATTEMPT in $(seq 1 "$ATTEMPTS"); do
-            PUSH_OUTPUT=$(git push --force space main 2>&1)
+            PUSH_OUTPUT=$(git -c "http.https://huggingface.co/.extraheader=AUTHORIZATION: Basic $HF_AUTH_HEADER" push --force space main 2>&1)
             PUSH_STATUS=$?
-            echo "$PUSH_OUTPUT"
             if [ "$PUSH_STATUS" -eq 0 ]; then
               exit 0
             fi
-            if ! echo "$PUSH_OUTPUT" | grep -Eq "returned error: (429|5[0-9]{2})"; then
+            if ! echo "$PUSH_OUTPUT" | grep -Eq "returned error: (429|5[0-9]{2})|timed out|Failed to connect"; then
+              echo "::error::Push to Hugging Face Hub failed with a non-retryable error."
               exit "$PUSH_STATUS"
             fi
             if [ "$ATTEMPT" -lt "$ATTEMPTS" ]; then
-              sleep $((ATTEMPT * 10))
+              sleep $((10 * 2 ** (ATTEMPT - 1)))
             fi
           done
           echo "::error::Failed to push to Hugging Face Hub after $ATTEMPTS attempts."
