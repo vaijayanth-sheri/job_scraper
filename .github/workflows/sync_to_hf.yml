@@ -19,5 +19,30 @@ jobs:
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          git remote add space https://Vaijayanth-sheri:$HF_TOKEN@huggingface.co/spaces/Vaijayanth-sheri/Job_scraper
-          git push --force space main
+          if [ -z "$HF_TOKEN" ]; then
+            echo "::error::HF_TOKEN secret is not configured."
+            exit 1
+          fi
+          HF_SPACE_URL="https://Vaijayanth-sheri:${HF_TOKEN}@huggingface.co/spaces/Vaijayanth-sheri/Job_scraper"
+          if git remote get-url space >/dev/null 2>&1; then
+            git remote set-url space "$HF_SPACE_URL"
+          else
+            git remote add space "$HF_SPACE_URL"
+          fi
+          ATTEMPTS=3
+          for ATTEMPT in $(seq 1 "$ATTEMPTS"); do
+            PUSH_OUTPUT=$(git push --force space main 2>&1)
+            PUSH_STATUS=$?
+            echo "$PUSH_OUTPUT"
+            if [ "$PUSH_STATUS" -eq 0 ]; then
+              exit 0
+            fi
+            if ! echo "$PUSH_OUTPUT" | grep -Eq "returned error: (429|5[0-9]{2})"; then
+              exit "$PUSH_STATUS"
+            fi
+            if [ "$ATTEMPT" -lt "$ATTEMPTS" ]; then
+              sleep $((ATTEMPT * 10))
+            fi
+          done
+          echo "::error::Failed to push to Hugging Face Hub after $ATTEMPTS attempts."
+          exit 1
